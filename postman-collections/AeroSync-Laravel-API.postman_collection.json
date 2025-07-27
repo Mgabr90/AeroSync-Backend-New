@@ -1,0 +1,444 @@
+{
+  "info": {
+    "name": "AeroSync Laravel Backend API",
+    "description": "Complete API collection for AeroSync Laravel backend with document processing, classification, and management endpoints",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "description": "Base URL for the Laravel application"
+    },
+    {
+      "key": "api_prefix",
+      "value": "/api/v1",
+      "description": "API version prefix"
+    },
+    {
+      "key": "document_id",
+      "value": "",
+      "description": "Document UUID for testing"
+    },
+    {
+      "key": "section_id",
+      "value": "",
+      "description": "Section UUID for testing"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health & System",
+      "description": "System health checks and information endpoints",
+      "item": [
+        {
+          "name": "Health Check (v1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health"]
+            },
+            "description": "Check system health and service status"
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check (Legacy)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Legacy health check endpoint for Node.js compatibility"
+          },
+          "response": []
+        },
+        {
+          "name": "System Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/system/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "system", "stats"]
+            },
+            "description": "Get processing statistics and performance metrics"
+          },
+          "response": []
+        },
+        {
+          "name": "Available Extractors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/system/extractors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "system", "extractors"]
+            },
+            "description": "Get list of available PDF extractors and their capabilities"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Document Processing",
+      "description": "Core document processing endpoints",
+      "item": [
+        {
+          "name": "Process Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [],
+                  "description": "PDF file to process (max 50MB)"
+                },
+                {
+                  "key": "document_type",
+                  "value": "iosa",
+                  "description": "Expected document type (iosa, gacar, ecar, icao, faa, easa)",
+                  "type": "text"
+                },
+                {
+                  "key": "organization_id",
+                  "value": "",
+                  "description": "Organization UUID (optional)",
+                  "type": "text"
+                },
+                {
+                  "key": "use_ai",
+                  "value": "true",
+                  "description": "Enable AI-powered processing",
+                  "type": "text"
+                },
+                {
+                  "key": "skip_classification",
+                  "value": "false",
+                  "description": "Skip automatic document type classification",
+                  "type": "text"
+                },
+                {
+                  "key": "quality_threshold",
+                  "value": "0.85",
+                  "description": "Quality threshold (0-1)",
+                  "type": "text"
+                },
+                {
+                  "key": "extraction_options[use_ocr]",
+                  "value": "false",
+                  "description": "Enable OCR for scanned documents",
+                  "type": "text"
+                },
+                {
+                  "key": "extraction_options[preserve_layout]",
+                  "value": "true",
+                  "description": "Preserve document layout during extraction",
+                  "type": "text"
+                },
+                {
+                  "key": "extraction_options[timeout_seconds]",
+                  "value": "300",
+                  "description": "Processing timeout in seconds (30-600)",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents/process",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "process"]
+            },
+            "description": "Upload and process a PDF document with advanced parsing capabilities"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents/{{document_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "{{document_id}}", "status"]
+            },
+            "description": "Check the processing status of a document"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents/{{document_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "{{document_id}}"]
+            },
+            "description": "Get detailed information about a processed document"
+          },
+          "response": []
+        },
+        {
+          "name": "List Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents?page=1&per_page=20&document_type=iosa&status=completed&search=manual",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20",
+                  "description": "Items per page (1-100)"
+                },
+                {
+                  "key": "document_type",
+                  "value": "iosa",
+                  "description": "Filter by document type"
+                },
+                {
+                  "key": "status",
+                  "value": "completed",
+                  "description": "Filter by processing status"
+                },
+                {
+                  "key": "organization_id",
+                  "value": "",
+                  "description": "Filter by organization"
+                },
+                {
+                  "key": "search",
+                  "value": "manual",
+                  "description": "Search term"
+                }
+              ]
+            },
+            "description": "List documents with filtering and pagination"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Document Sections",
+      "description": "Document sections and content management",
+      "item": [
+        {
+          "name": "Get Document Sections",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents/{{document_id}}/sections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "{{document_id}}", "sections"]
+            },
+            "description": "Get all sections of a processed document"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Section Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/documents/{{document_id}}/sections/{{section_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "documents", "{{document_id}}", "sections", "{{section_id}}"]
+            },
+            "description": "Get detailed information about a specific document section"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Document Types",
+      "description": "Document type management and classification",
+      "item": [
+        {
+          "name": "Get Supported Document Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/document-types",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "document-types"]
+            },
+            "description": "Get list of supported document types and their capabilities"
+          },
+          "response": []
+        },
+        {
+          "name": "Classify Document Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Sample document content for classification\",\n  \"filename\": \"sample-document.pdf\",\n  \"metadata\": {\n    \"title\": \"Aviation Safety Manual\",\n    \"author\": \"IATA\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{api_prefix}}/document-types/classify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "document-types", "classify"]
+            },
+            "description": "Classify document type based on content analysis"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "User authentication endpoints",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user"]
+            },
+            "description": "Get current authenticated user information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Legacy Compatibility",
+      "description": "Legacy endpoints for Node.js API compatibility",
+      "item": [
+        {
+          "name": "Enhanced Jobs (Legacy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"upload\",\n  \"data\": {\n    \"message\": \"This is a legacy endpoint test\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/enhanced-jobs?action=upload",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enhanced-jobs"],
+              "query": [
+                {
+                  "key": "action",
+                  "value": "upload",
+                  "description": "Legacy action parameter"
+                }
+              ]
+            },
+            "description": "Legacy endpoint that redirects to new API endpoints"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set common headers",
+          "pm.request.headers.add({",
+          "    key: 'Accept',",
+          "    value: 'application/json'",
+          "});",
+          "",
+          "// Log request details",
+          "console.log('Making request to:', pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Common response tests",
+          "pm.test('Response time is less than 10000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(10000);",
+          "});",
+          "",
+          "pm.test('Response has success field', function () {",
+          "    const responseJson = pm.response.json();",
+          "    pm.expect(responseJson).to.have.property('success');",
+          "});",
+          "",
+          "// Extract document_id from successful process responses",
+          "if (pm.request.url.path.includes('process') && pm.response.code === 201) {",
+          "    const responseJson = pm.response.json();",
+          "    if (responseJson.success && responseJson.data && responseJson.data.document_id) {",
+          "        pm.collectionVariables.set('document_id', responseJson.data.document_id);",
+          "        console.log('Document ID saved:', responseJson.data.document_id);",
+          "    }",
+          "}"
+        ]
+      }
+    }
+  ]
+}
