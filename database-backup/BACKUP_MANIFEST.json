@@ -1,0 +1,114 @@
+{
+  "timestamp": "2025-07-25T08:22:29.993Z",
+  "method": "Supabase MCP (due to pg_dump connectivity issues)",
+  "project": {
+    "name": "AeroSync-V1",
+    "id": "hpozuqhkxpexrzjysvpo",
+    "region": "us-east-1",
+    "host": "db.hpozuqhkxpexrzjysvpo.supabase.co",
+    "status": "ACTIVE_HEALTHY"
+  },
+  "database": {
+    "version": "15.8.1.121",
+    "postgres_engine": "15",
+    "release_channel": "ga"
+  },
+  "schemas_found": [
+    "public (43 tables) - Main application data",
+    "auth (16 tables) - Supabase authentication",
+    "storage (5 tables) - Supabase storage",
+    "extensions (installed extensions)",
+    "vault (Supabase vault)",
+    "graphql (GraphQL API)",
+    "realtime (real-time subscriptions)"
+  ],
+  "tables_summary": {
+    "public_schema": {
+      "core_tables": [
+        "authorities",
+        "organizations",
+        "users",
+        "user_profiles",
+        "documents",
+        "document_sections",
+        "document_categories",
+        "regulations",
+        "regulation_sections",
+        "regulation_categories",
+        "audits",
+        "audit_findings",
+        "findings",
+        "pdf_jobs",
+        "pdf_results",
+        "pdf_sections",
+        "pipeline_execution_logs",
+        "activity_logs"
+      ],
+      "system_tables": [
+        "roles",
+        "billing_periods",
+        "billing_records",
+        "token_usage",
+        "authority_profiles",
+        "organization_type_technical_profiles",
+        "schema_change_log"
+      ]
+    },
+    "auth_schema": [
+      "users",
+      "sessions",
+      "refresh_tokens",
+      "identities",
+      "audit_log_entries",
+      "mfa_factors",
+      "mfa_challenges",
+      "flow_state",
+      "saml_providers",
+      "sso_providers"
+    ],
+    "storage_schema": [
+      "buckets",
+      "objects",
+      "s3_multipart_uploads",
+      "s3_multipart_uploads_parts",
+      "migrations"
+    ]
+  },
+  "extensions": {
+    "installed": [
+      "pg_graphql 1.5.11",
+      "pg_stat_statements 1.10",
+      "pgjwt 0.2.0",
+      "supabase_vault 0.3.1",
+      "vector 0.8.0",
+      "uuid-ossp 1.1",
+      "pgcrypto 1.3",
+      "plpgsql 1.0"
+    ]
+  },
+  "migrations": {
+    "total": 84,
+    "latest": "20250628061846_add_original_outline_title_column",
+    "first": "20250604115903_create_authorities_table"
+  },
+  "rls_policies": "Comprehensive Row Level Security implemented across all user tables",
+  "backup_strategy": {
+    "reason": "Direct pg_dump failed due to DNS/connectivity issues with Supabase host",
+    "solution": "Using Supabase MCP execute_sql for systematic data extraction",
+    "approach": [
+      "1. Extract schema definitions using INFORMATION_SCHEMA queries",
+      "2. Export table data as INSERT statements with batching",
+      "3. Backup functions, triggers, and RLS policies",
+      "4. Create restore scripts and documentation"
+    ]
+  },
+  "backup_files": {},
+  "notes": [
+    "Complete AeroSync aviation compliance database",
+    "Includes IOSA (IATA Operational Safety Audit) integration",
+    "Authority and regulation management system",
+    "Document processing and PDF extraction pipeline",
+    "User isolation with organization-based access control",
+    "Comprehensive audit trail and findings system"
+  ]
+}
